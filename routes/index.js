@@ -19,6 +19,58 @@ router.get('/tasks', (req, res, next) => {
     })
 });
 
+// agregamos una tarea nueva
+router.get('/task/add', (req, res, next) => {
+  res.render("task-add");
+});
+
+router.post('/task/add', (req, res, next) => {
+  const { title, author, description } = req.body;
+  const newTask = new Task({ title, author, description})
+  newTask.save()
+  .then((task) => {
+    res.redirect('/tasks');
+  })
+  .catch((error) => {
+    console.log(error);
+  })
+});
+
+// creamos la ruta de la pagina task/edit y la renderizamos.
+router.get("/task/edit", (req, res, next) => {
+  Task.findOne({ _id: req.query.task_id })
+    .then((task) => {
+      res.render("task-edit", { task });
+    })
+    // si hay un error, se ejecuta el catch que dentro tiene un console.log 
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+router.post("/task/edit", (req, res, next) => {
+  const { title, author, description } = req.body;
+  // la sintaxis del metodo update recibe tres parametros: 
+  Task.updateOne(
+    // el primero, es el query para buscar lo que queremos editar.
+    { _id: req.query.task_id },
+    // el segundo, especificamos los campos que queremos actualizar.
+    { $set: { title, author, description } },
+    // el tercero, un objeto en el cual especificamos que queremos el nuevo documento. 
+    { new: true }
+  )
+  // task es un parametro, es todo lo que me devuelve el resultado de la busqueda. 
+    .then((task) => {
+      // si todo sale bien, se ejecutara el then. si hay error ira al catch de abajo.
+      res.redirect("/tasks");
+    })
+    // si hay un error, se ejecuta el catch que dentro tiene un console.log 
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+// detalle de la tarea.
 router.get('/task/:taskId', (req, res, next) => {
   Task.findById(req.params.taskId)
     .then(theTask => {
