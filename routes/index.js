@@ -70,6 +70,16 @@ router.post("/task/edit", (req, res, next) => {
     });
 });
 
+router.post('/task/:taskId', (req, res, next) => {
+  Task.findByIdAndDelete({ _id: req.query.task_id })
+    .then((deleteTask) => {
+      res.redirect("/tasks")
+    })
+    .catch((error) => {
+      console.log('Error while deleting the task: ', error)
+    })
+})
+
 // detalle de la tarea.
 router.get('/task/:taskId', (req, res, next) => {
   Task.findById(req.params.taskId)
