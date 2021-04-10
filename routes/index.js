@@ -88,7 +88,7 @@ router.get('/task/:taskId', (req, res, next) => {
     })
     .catch(error => {
       console.log('Error while retrieving task details: ', error);
-    })
+    })  
 });
 
 module.exports = router;

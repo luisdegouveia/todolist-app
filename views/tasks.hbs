@@ -1,13 +1,26 @@
 {{!-- views/tasks.hbs --}}
 
-<h1>TASKS</h1>
 
-<a href="/task/add">CREATE A NEW TASK</a>
+<body>
 
-{{#each tasks}}
-<p>
-  <a href="task/{{this._id}}">{{this.title}}</a>
+  <div class="contenedor contenido-principal">
+    <main class="tareas">
 
-  <a href="/task/edit?task_id={{this._id}}" class="edit-button">EDIT</a>
-</p>
-{{/each}}
+      <h1>Upcoming tasks</h1>
+
+      <a href="/task/add">CREATE A NEW TASK</a>
+
+      {{#each tasks}}
+      <p>
+        <a href="task/{{this._id}}">{{this.title}}</a>
+
+        <a href="/task/edit?task_id={{this._id}}" class="edit-button">EDIT</a>
+      </p>
+      {{/each}}
+  
+    </main>
+
+    <h2>Completed tasks</h2>
+  </div>
+
+</body>
